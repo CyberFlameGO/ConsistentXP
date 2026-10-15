@@ -1,0 +1,69 @@
+# ==============================================================================
+# ConsistentXP Configuration
+# Reworks experience gain so that experience levels do not scale in difficulty.
+# ==============================================================================
+
+# The fixed amount of experience points (XP) required for each level.
+# In vanilla Minecraft, each level requires linearly more XP:
+#   Levels 0-15:  2 * Level + 7   (e.g., Level 0 -> 1 requires 7 XP)
+#   Levels 16-30: 5 * Level - 38  (e.g., Level 29 -> 30 requires 107 XP)
+#   Levels 31+:   9 * Level - 158 (e.g., Level 50 -> 51 requires 292 XP)
+# Total vanilla XP to reach Level 30 is 1,395 XP.
+#
+# With ConsistentXP:
+#   Every single level requires the exact same amount of XP.
+#   All XP gains (orbs, furnaces, fishing, mining, breeding) are consistent.
+# Default: 50 (Reaching level 30 takes 1,500 total XP, closely matching vanilla's 1,395 XP).
+xp-per-level: 50
+
+# Sound settings when a player levels up.
+sound:
+  level-up:
+    enabled: true
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 0.75
+    pitch: 1.0
+
+# Player death experience settings.
+death:
+  # How dropped experience should be calculated when a player dies:
+  # - VANILLA: Uses vanilla Minecraft calculation (Math.min(level * 7, 100)).
+  # - PERCENTAGE: Drops a configurable percentage of the player's total consistent XP.
+  # - FLAT: Drops a fixed amount of XP.
+  # - ALL: Drops 100% of the player's total XP.
+  drop-calculation: "VANILLA"
+
+  # Percentage of total XP to drop (only used if drop-calculation is PERCENTAGE).
+  drop-percentage: 50.0
+
+  # Fixed amount of XP to drop (only used if drop-calculation is FLAT).
+  flat-dropped-xp: 50
+
+  # Maximum experience points that can be dropped on death (-1 for no limit).
+  max-dropped-xp: 100
+
+  # If true, players will keep their experience and level when dying (overrides keepInventory).
+  keep-xp-on-death: false
+
+# Migration settings for players with existing vanilla experience.
+migration:
+  # If true, players joining with vanilla XP will be migrated once on join.
+  enabled: true
+
+  # Migration strategy:
+  # - CONVERT_TOTAL_XP: Calculates the player's vanilla total XP points and converts them to
+  #                     the new consistent scale (preserves total accumulated XP points).
+  # - KEEP_LEVEL: Preserves the player's current level and scales their current progress bar.
+  mode: "CONVERT_TOTAL_XP"
+
+# Chat message formatting (MiniMessage syntax is supported).
+messages:
+  prefix: "<dark_aqua>[<aqua>Consistent XP<dark_aqua>] <gray>"
+  no-permission: "<red>You do not have permission to execute this command."
+  player-not-found: "<red>Player '<yellow><player></yellow>' not found or is offline."
+  invalid-amount: "<red>Amount must be a positive integer."
+  reloaded: "<green>Configuration reloaded successfully!"
+  xp-check-self: "<gray>Level: <aqua><level></aqua> | Progress: <aqua><points></aqua>/<aqua><max_points></aqua> XP (<aqua><percent>%</aqua>) | Next level: <aqua><needed></aqua> XP | Total: <aqua><total></aqua> XP"
+  xp-check-other: "<gray><player>'s Level: <aqua><level></aqua> | Progress: <aqua><points></aqua>/<aqua><max_points></aqua> XP (<aqua><percent>%</aqua>) | Next level: <aqua><needed></aqua> XP | Total: <aqua><total></aqua> XP"
+  xp-added: "<green>Added <aqua><amount></aqua> <type> to <yellow><player></yellow>."
+  xp-set: "<green>Set <type> of <yellow><player></yellow> to <aqua><amount></aqua>."
